@@ -1,26 +1,34 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import AppLayout from '@/Layouts/AppLayout';
+import axios from 'axios';
+import { useEffect } from 'react';
 
 export default function Dashboard() {
-    return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Dashboard
-                </h2>
-            }
-        >
-            <Head title="Dashboard" />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                            You're logged in!
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </AuthenticatedLayout>
-    );
+    useEffect(() => {
+        const token = sessionStorage.getItem('token');
+
+        if (!token) {
+            // Redirect to login if no token is found
+            window.location.href = route('login');
+        } else {
+            // Optionally, validate the token with the server
+            axios
+                .get('/api/validate-token', {
+                    headers: { Authorization: `Bearer ${token}` },
+                })
+                .catch(() => {
+                    // Redirect to login if token is invalid
+                    sessionStorage.removeItem('token'); // Clear the token
+                    window.location.href = route('login');
+                });
+        }
+    }, []);
+
+
+
+    return <>Ini Dashboard</>;
 }
+
+
+
+Dashboard.layout = (page) => <AppLayout children={page} title="Dashboard"/>;
