@@ -49,7 +49,7 @@ export default function Index(props) {
                 {/* <CardHeader>
 
                 </CardHeader> */}
-                <CardContent>
+                <CardContent className='py-4'>
                     <DataTable />
                 </CardContent>
             </Card>

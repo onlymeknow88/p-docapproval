@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\API\EInvoiceController;
+use App\Http\Controllers\Admin\API\UserController;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,13 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::prefix('admin')->group(function () {
         Route::controller(EInvoiceController::class)->group(function () {
             Route::get('vendor', 'index');
+        });
+        Route::controller(UserController::class)->group(function () {
+            Route::get('user', 'index');
+            Route::post('user', 'store');
+            Route::post('user/{id}', 'update');
+            Route::get('user/check-username', 'checkUsername');
+            Route::delete('user/{id}/destroy', 'destroy');
         });
     });
 });

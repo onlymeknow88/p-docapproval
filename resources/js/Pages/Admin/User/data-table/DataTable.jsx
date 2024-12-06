@@ -1,4 +1,15 @@
-import { IconArrowsUpDown, IconChevronLeft, IconChevronRight, IconRefresh } from '@tabler/icons-react';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/Components/ui/alert-dialog';
+import { IconArrowsUpDown, IconChevronLeft, IconChevronRight, IconRefresh, IconTrash } from '@tabler/icons-react';
 import { Pagination, PaginationContent } from '@/Components/ui/pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -6,10 +17,13 @@ import { flexRender, getCoreRowModel, getPaginationRowModel, useReactTable } fro
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
+import Edit from '../edit';
 import { Input } from '@/Components/ui/input';
 import axios from 'axios';
+import callAPI from '@/config/callAPI';
+import { toast } from 'sonner';
 
-export function DataTable() {
+export function DataTable({ setRefreshFunction }) {
     const [currentPage, setCurrentPage] = useState(0);
     const [perPage, setPerPage] = useState(10);
     const [globalFilter, setGlobalFilter] = useState('');
@@ -29,44 +43,77 @@ export function DataTable() {
             cell: ({ row }) => row.index + 1 + (currentPage - 1) * perPage,
         },
         {
-            accessorKey: 'UserName',
+            accessorKey: 'username',
             header: 'UserName',
         },
         {
-            accessorKey: 'VendorNo',
-            header: 'VendorNo', // Plain string
+            accessorKey: 'name',
+            header: 'Nama', // Plain string
         },
         {
-            accessorKey: 'VendorName',
-            header: 'VendorName', // Plain string
-        },
-        {
-            accessorKey: 'Abbreviation',
-            header: 'Abbreviation', // Plain string
-        },
-        {
-            accessorKey: 'Email',
+            accessorKey: 'email',
             header: 'Email', // Plain string
         },
         {
-            accessorKey: 'VendorType',
-            header: 'VendorType', // Plain string
-        },
-        {
-            accessorKey: 'NoTelp',
-            header: 'NoTelp', // Plain string
-        },
-        {
-            accessorKey: 'Active',
-            header: 'Active', // Plain string
-            cell: ({ row }) => (row.original.Active == 1 ? 'Aktif' : 'Tidak Aktif'),
+            accessorKey: 'aksi',
+            header: 'Aksi', // Plain string,
+            cell: ({ row }) => (
+                <div className="flex items-center gap-x-1">
+                    <Edit row={row.original} refreshData={fetchVendors} />
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button variant="red" size="sm">
+                                <IconTrash size="size-4" />
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>Apakah anda bener-bener yakin?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    Tindakan ini tidak dapat dibatalkan. Tindakan ini akan menghapus data secara
+                                    permanen dan menghapus data anda dari server kami
+                                </AlertDialogDescription>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction onClick={() => handleDelete(row.original.id)}>
+                                        Delete
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogHeader>
+                        </AlertDialogContent>
+                    </AlertDialog>
+                </div>
+            ),
         },
     ];
+
+    function deleteData(id) {
+        const url = '/api/admin/user/' + id + '/destroy';	
+
+        return callAPI({
+            url,
+            method: 'DELETE',
+            token: true,
+        })
+    }
+
+    const handleDelete = async (id) => {
+        try {
+            const res = await deleteData(id);
+            
+            if(res.data.meta.code === 200){
+                toast.success('Data berhasil dihapus');
+                fetchVendors();
+            }
+        } catch (error) {
+            toast.error('Data gagal dihapus');
+        }
+    };
 
     const fetchVendors = async () => {
         try {
             setIsLoading(true);
-            const response = await axios.get('/api/admin/vendor', {
+            const response = await axios.get('/api/admin/user', {
                 params: {
                     page: currentPage,
                     load: perPage,
@@ -115,7 +162,8 @@ export function DataTable() {
 
     useEffect(() => {
         fetchVendors();
-    }, [perPage, currentPage, globalFilter, sorting]);
+        setRefreshFunction(() => fetchVendors);
+    }, [perPage, currentPage, globalFilter, sorting, setRefreshFunction]);
 
     const handlePerPage = (e) => {
         // console.log(e)
@@ -191,7 +239,7 @@ export function DataTable() {
                                                 </span>
 
                                                 {/* Manual Sorting Button */}
-                                                {!['VendorType', 'Abbreviation'].includes(header.column.id) && (
+                                                {!['VendorType', 'Abbreviation', '#'].includes(header.column.id) && (
                                                     <Button
                                                         variant="ghost"
                                                         onClick={() => handleManualSort(header.column.id)}
