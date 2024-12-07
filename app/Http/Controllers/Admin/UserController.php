@@ -9,8 +9,6 @@ class UserController extends Controller
 {
     public function index()
     {
-
-
         return inertia('Admin/User/Index', [
             'page_settings' => [
                 'title' => 'User',

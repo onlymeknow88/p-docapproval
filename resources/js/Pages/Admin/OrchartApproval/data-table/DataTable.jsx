@@ -9,19 +9,19 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/Components/ui/alert-dialog';
+import { IconArrowsUpDown, IconChevronLeft, IconChevronRight, IconRefresh, IconTrash } from '@tabler/icons-react';
 import { Pagination, PaginationContent } from '@/Components/ui/pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { IconArrowsUpDown, IconChevronLeft, IconChevronRight, IconRefresh, IconTrash } from '@tabler/icons-react';
 import { flexRender, getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/Components/ui/input';
-import callAPI from '@/config/callAPI';
-import axios from 'axios';
-import { toast } from 'sonner';
 import Edit from '../edit';
+import { Input } from '@/Components/ui/input';
+import axios from 'axios';
+import callAPI from '@/config/callAPI';
+import { toast } from 'sonner';
 
 export function DataTable({ setRefreshFunction }) {
     const [currentPage, setCurrentPage] = useState(0);
@@ -29,7 +29,7 @@ export function DataTable({ setRefreshFunction }) {
     const [globalFilter, setGlobalFilter] = useState('');
     const [sorting, setSorting] = useState({ id: '', desc: false });
     const [data, setData] = useState([]);
-    const [totalPages, setTotalPages] = useState(1);
+    const [totalPages, setTotalPages] = useState('');
     const [lastPage, setLastPage] = useState();
     const [prevPage, setPrevPage] = useState(null);
     const [nextPage, setNextPage] = useState(null);
@@ -43,16 +43,28 @@ export function DataTable({ setRefreshFunction }) {
             cell: ({ row }) => row.index + 1 + (currentPage - 1) * perPage,
         },
         {
-            accessorKey: 'username',
-            header: 'UserName',
+            accessorKey: 'CompanyId',
+            header: 'Company',
         },
         {
-            accessorKey: 'name',
-            header: 'Nama', // Plain string
+            accessorKey: 'DeptId',
+            header: 'Dept', // Plain string
         },
         {
-            accessorKey: 'email',
-            header: 'Email', // Plain string
+            accessorKey: 'Name',
+            header: 'Name', // Plain string
+        },
+        {
+            accessorKey: 'Position',
+            header: 'Position', // Plain string
+        },
+        {
+            accessorKey: 'Checker',
+            header: 'Checker', // Plain string
+        },
+        {
+            accessorKey: 'ReportTo',
+            header: 'ReportTo', // Plain string
         },
         {
             accessorKey: 'aksi',
@@ -88,7 +100,7 @@ export function DataTable({ setRefreshFunction }) {
     ];
 
     function deleteData(id) {
-        const url = '/api/admin/user/' + id + '/destroy';
+        const url = '/api/admin/orchart-approval/' + id + '/destroy';
 
         return callAPI({
             url,
@@ -113,7 +125,7 @@ export function DataTable({ setRefreshFunction }) {
     const fetchVendors = async () => {
         try {
             setIsLoading(true);
-            const response = await axios.get('/api/admin/user', {
+            const response = await axios.get('/api/admin/orchart-approval', {
                 params: {
                     page: currentPage,
                     load: perPage,
@@ -239,7 +251,9 @@ export function DataTable({ setRefreshFunction }) {
                                                 </span>
 
                                                 {/* Manual Sorting Button */}
-                                                {!['VendorType', 'Abbreviation', '#'].includes(header.column.id) && (
+                                                {!['DeptId', 'Position', 'Checker', 'ReportTo', 'aksi', '#'].includes(
+                                                    header.column.id,
+                                                ) && (
                                                     <Button
                                                         variant="ghost"
                                                         onClick={() => handleManualSort(header.column.id)}

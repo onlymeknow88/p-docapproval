@@ -1,7 +1,4 @@
-
-const ColumnHeader = () => {
-
-}
+const ColumnHeader = () => {};
 const columns = [
     {
         accessorKey: '#',

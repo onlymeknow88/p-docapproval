@@ -1,56 +1,33 @@
 import { Card, CardContent } from '@/Components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { IconPlus, IconUser } from '@tabler/icons-react';
+import { IconPlus, IconUsersGroup } from '@tabler/icons-react';
+
+import AppLayout from '@/Layouts/AppLayout';
+import { Button } from '@/Components/ui/button';
+import { Create } from './create';
+import { DataTable } from './data-table/DataTable';
+import HeaderTitle from '@/Components/HeaderTitle';
+import callAPI from '../../../config/callAPI';
+import { toast } from 'sonner';
+import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
-import HeaderTitle from '@/Components/HeaderTitle';
-import { Button } from '@/Components/ui/button';
-import AppLayout from '@/Layouts/AppLayout';
-import { useForm } from '@inertiajs/react';
-import { toast } from 'sonner';
-import callAPI from '../../../config/callAPI';
-import { Create } from './Create';
-import { DataTable } from './data-table/DataTable';
-
 export default function Index(props) {
+    const [open, setOpen] = useState(false);
     const [refreshFunction, setRefreshFunction] = useState(null);
     const { data, setData } = useForm({
-        name: '',
-        username: '',
-        password: '',
-        email: '',
+        CompanyId: '',
+        DeptId: '',
+        Name: '',
+        Email: '',
+        Position: '',
+        Checker: '',
     });
 
-    const [open, setOpen] = useState(false);
     const [errors, setErrors] = useState({});
-    const [checkUsernameError, setCheckUsernameError] = useState('');
-
-    function checkUsername(username) {
-        const url = '/api/admin/user/check-username?username=' + username;
-
-        return callAPI({
-            url,
-            method: 'GET',
-            token: true,
-        });
-    }
-
-    const handleCheckUsername = async (e) => {
-        const { name, value } = e.target;
-
-        setData(name, value);
-
-        const res = await checkUsername(value);
-
-        if (res.error) {
-            setCheckUsernameError(res.data);
-        } else {
-            setCheckUsernameError('');
-        }
-    };
 
     function storeData() {
-        const url = '/api/admin/user';
+        const url = '/api/admin/orchart-approval';
 
         return callAPI({
             url,
@@ -60,18 +37,25 @@ export default function Index(props) {
         });
     }
 
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        // console.log(data)
         const res = await storeData();
+
+        console.log(res)
+
+        if (res.error) {
+            setErrors(res.data);
+            toast.error(res.message);
+        }
 
         if (res.data.meta.code === 200) {
             setOpen(false);
             toast.success(res.data.meta.message);
             if (refreshFunction) refreshFunction();
-        } else {
-            toast.error(res.data.meta.message);
-        }
+        } 
     };
 
     return (
@@ -80,7 +64,7 @@ export default function Index(props) {
                 <HeaderTitle
                     title={props.page_settings.title}
                     subtitle={props.page_settings.subtitle}
-                    icon={IconUser}
+                    icon={IconUsersGroup}
                 />
                 <Dialog open={open} onOpenChange={setOpen}>
                     <DialogTrigger asChild>
@@ -89,12 +73,13 @@ export default function Index(props) {
                             Tambah
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-3xl">
+                    <DialogContent className="sm:max-w-3xl h-full max-h-screen overflow-y-auto">
                         <DialogHeader>
-                            <DialogTitle>Tambah User</DialogTitle>
+                            <DialogTitle>Tambah Orchart Approval</DialogTitle>
                         </DialogHeader>
 
-                        <Create data={data} setData={setData} handleSubmit={handleSubmit} />
+                        <Create data={data} setData={setData} handleSubmit={handleSubmit} errors={errors} />
+                        
                     </DialogContent>
                 </Dialog>
             </div>
@@ -110,4 +95,4 @@ export default function Index(props) {
     );
 }
 
-Index.layout = (page) => <AppLayout children={page} title="User" />;
+Index.layout = (page) => <AppLayout children={page} title="Orchart Approval" />;

@@ -29,6 +29,8 @@ Route::prefix('admin')->group(function () {
     });
 });
 
+Route::get('/check-token', [DashboardController::class, 'checkToken']);
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

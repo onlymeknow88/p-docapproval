@@ -1,6 +1,6 @@
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 
-import {Avatar, AvatarFallback, AvatarImage} from "@/Components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -8,32 +8,33 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu';
-import { Head, Link, usePage } from '@inertiajs/react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/ui/sheet';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Button } from '@/components/ui/button';
+import { Toaster } from '@/Components/ui/sonner';
+import { ProtectedRoute } from '@/Pages/ProtectedRoute';
 import { IconLayoutSidebar } from '@tabler/icons-react';
+import axios from 'axios';
 import Sidebar from './Partials/Sidebar';
 import SidebarResponsive from './Partials/SidebarResponsive';
-import { Toaster } from '@/Components/ui/sonner';
-import axios from 'axios';
 
-export default function AppLayout({ title, children}) {
+export default function AppLayout({ title, children }) {
     // const auth = usePage().props.auth.user;
 
     const [authUser, setAuthUser] = useState([]);
 
-    const getInitialName = fullName => {
+    const getInitialName = (fullName) => {
         if (!fullName) return '';
 
         const nameParts = fullName.trim().split(' ');
 
-        const initials = nameParts.map(name => name[0].toUpperCase()).join('');
+        const initials = nameParts.map((name) => name[0].toUpperCase()).join('');
 
         return initials;
-      };
+    };
 
     const fetchUser = async () => {
         try {
@@ -48,25 +49,7 @@ export default function AppLayout({ title, children}) {
         }
     };
 
-    const checkValidatetoken = async () => {
-        try {
-            const response = await axios.get('/api/validate-token', {
-                headers: {
-                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-                },
-            });
-
-            if (response.status === 200) {
-                return true;
-            } else {
-                sessionStorage.removeItem('token');
-                window.location.href = route('login');
-            }
-
-        } catch (error) {
-            console.error('Error fetching user:', error);
-        }
-    };
+    // useAuth();
 
     const logout = async () => {
         try {
@@ -78,7 +61,7 @@ export default function AppLayout({ title, children}) {
                         Accept: 'application/json',
                         Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                     },
-                }
+                },
             );
             console.log(response);
             if (response.status === 200) {
@@ -90,16 +73,14 @@ export default function AppLayout({ title, children}) {
         }
     };
 
-
     useEffect(() => {
         fetchUser();
-        checkValidatetoken();
     }, []);
 
     const { url } = usePage();
 
     return (
-        <>
+        <ProtectedRoute>
             <Head title={title} />
             <Toaster position="top-center" richColors />
             <div className="flex flex-row w-full min-h-screen">
@@ -140,7 +121,7 @@ export default function AppLayout({ title, children}) {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" className="flex gap-x-2">
-                                <span>Hi, {authUser.name}</span>
+                                    <span>Hi, {authUser.name}</span>
 
                                     <Avatar>
                                         <AvatarImage src={authUser.avatar} />
@@ -179,6 +160,6 @@ export default function AppLayout({ title, children}) {
                     </main>
                 </div>
             </div>
-        </>
+        </ProtectedRoute>
     );
 }

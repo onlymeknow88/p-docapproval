@@ -1,7 +1,7 @@
-import { IconArrowsUpDown, IconChevronLeft, IconChevronRight, IconRefresh } from '@tabler/icons-react';
 import { Pagination, PaginationContent } from '@/Components/ui/pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { IconArrowsUpDown, IconChevronLeft, IconChevronRight, IconRefresh } from '@tabler/icons-react';
 import { flexRender, getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 import { useEffect, useState } from 'react';
 
@@ -180,7 +180,7 @@ export function DataTable() {
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
-                                    <TableHead key={header.id}>
+                                    <TableHead key={header.id} className="bg-green-500 text-white">
                                         {header.isPlaceholder ? null : (
                                             <div className="flex items-center justify-between">
                                                 {/* Render the header name */}
@@ -195,7 +195,7 @@ export function DataTable() {
                                                     <Button
                                                         variant="ghost"
                                                         onClick={() => handleManualSort(header.column.id)}
-                                                        className="ml-2"
+                                                        className="ml-2 hover:bg-green-500"
                                                     >
                                                         <IconArrowsUpDown
                                                             className="h-4 w-4"

@@ -1,16 +1,15 @@
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 import { Button } from '@/Components/ui/button';
 import { IconPencil } from '@tabler/icons-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { X } from 'lucide-react';
 import callAPI from '@/config/callAPI';
 import { toast } from 'sonner';
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function Edit({ row,refreshData  }) {
+export default function Edit({ row, refreshData }) {
     const { data, setData } = useForm({
         name: row?.name || '',
         username: row?.username || '',
@@ -94,7 +93,7 @@ export default function Edit({ row,refreshData  }) {
 
     return (
         <>
-            <Dialog open={open} onOpenChange={setOpen} >
+            <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                     <Button variant="blue" size="sm">
                         <IconPencil size="size-4" />

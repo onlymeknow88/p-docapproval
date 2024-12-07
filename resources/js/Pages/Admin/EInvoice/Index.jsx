@@ -1,13 +1,13 @@
-import { Card, CardContent, CardFooter, CardHeader } from '@/Components/ui/card';
+import { Card, CardContent } from '@/Components/ui/card';
 import { IconPlus, IconUserBolt } from '@tabler/icons-react';
 
-import AppLayout from '@/Layouts/AppLayout';
-import { Button } from '@/Components/ui/button';
-import { DataTable } from './data-table/DataTable';
 import HeaderTitle from '@/Components/HeaderTitle';
+import { Button } from '@/Components/ui/button';
+import AppLayout from '@/Layouts/AppLayout';
 import { Link } from '@inertiajs/react';
 import axios from 'axios';
 import { useEffect } from 'react';
+import { DataTable } from './data-table/DataTable';
 
 export default function Index(props) {
     useEffect(() => {
@@ -49,7 +49,7 @@ export default function Index(props) {
                 {/* <CardHeader>
 
                 </CardHeader> */}
-                <CardContent className='py-4'>
+                <CardContent className="py-4">
                     <DataTable />
                 </CardContent>
             </Card>

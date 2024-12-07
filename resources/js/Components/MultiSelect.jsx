@@ -1,9 +1,6 @@
-import { cva } from 'class-variance-authority';
-import { CheckIcon, ChevronDown, WandSparkles, XCircle, XIcon } from 'lucide-react';
 import * as React from 'react';
 
-import { Badge } from '@/Components/ui/badge';
-import { Button } from '@/Components/ui/button';
+import { CheckIcon, ChevronDown, WandSparkles, XCircle, XIcon } from 'lucide-react';
 import {
     Command,
     CommandEmpty,
@@ -14,8 +11,12 @@ import {
     CommandSeparator,
 } from '@/Components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover';
+
+import { Badge } from '@/Components/ui/badge';
+import { Button } from '@/Components/ui/button';
 import { Separator } from '@/Components/ui/separator';
 import { cn } from '@/lib/utils';
+import { cva } from 'class-variance-authority';
 
 /**
  * Variants for the multi-select component to handle different styles.
@@ -130,13 +131,13 @@ export const MultiSelect = React.forwardRef(
                                             >
                                                 {IconComponent && <IconComponent className="mr-2 h-4 w-4" />}
                                                 {option?.label}
-                                                <XCircle
+                                                {/* <XCircle
                                                     className="ml-2 h-4 w-4 cursor-pointer"
                                                     onClick={(event) => {
                                                         event.stopPropagation();
                                                         toggleOption(value);
                                                     }}
-                                                />
+                                                /> */}
                                             </Badge>
                                         );
                                     })}
@@ -150,24 +151,24 @@ export const MultiSelect = React.forwardRef(
                                             style={{ animationDuration: `${animation}s` }}
                                         >
                                             {`+ ${selectedValues.length - maxCount} more`}
-                                            <XCircle
+                                            {/* <XCircle
                                                 className="ml-2 h-4 w-4 cursor-pointer"
                                                 onClick={(event) => {
                                                     event.stopPropagation();
                                                     clearExtraOptions();
                                                 }}
-                                            />
+                                            /> */}
                                         </Badge>
                                     )}
                                 </div>
                                 <div className="flex items-center justify-between">
-                                    <XIcon
+                                    {/* <XIcon
                                         className="mx-2 h-4 cursor-pointer text-muted-foreground"
                                         onClick={(event) => {
                                             event.stopPropagation();
                                             handleClear();
                                         }}
-                                    />
+                                    /> */}
                                     <Separator orientation="vertical" className="flex h-full min-h-6" />
                                     <ChevronDown className="mx-2 h-4 cursor-pointer text-muted-foreground" />
                                 </div>
@@ -180,9 +181,9 @@ export const MultiSelect = React.forwardRef(
                         )}
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start" onEscapeKeyDown={() => setIsPopoverOpen(false)}>
+                <PopoverContent className="w-[400px] p-0" align="start" onEscapeKeyDown={() => setIsPopoverOpen(false)}>
                     <Command>
-                        <CommandInput placeholder="Search..." onKeyDown={handleInputKeyDown} />
+                        <CommandInput className="border-none focus:ring-0" placeholder="Search..." onKeyDown={handleInputKeyDown} />
                         <CommandList>
                             <CommandEmpty>No results found.</CommandEmpty>
                             <CommandGroup>
@@ -250,7 +251,7 @@ export const MultiSelect = React.forwardRef(
                         </CommandList>
                     </Command>
                 </PopoverContent>
-                {animation > 0 && selectedValues.length > 0 && (
+                {/* {animation > 0 && selectedValues.length > 0 && (
                     <WandSparkles
                         className={cn(
                             'my-2 h-3 w-3 cursor-pointer bg-background text-foreground',
@@ -258,7 +259,7 @@ export const MultiSelect = React.forwardRef(
                         )}
                         onClick={() => setIsAnimating(!isAnimating)}
                     />
-                )}
+                )} */}
             </Popover>
         );
     },

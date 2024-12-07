@@ -1,11 +1,11 @@
 import { Head, Link, useForm } from '@inertiajs/react';
 
 import Checkbox from '@/Components/Checkbox';
-import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
+import GuestLayout from '@/Layouts/GuestLayout';
 import axios from 'axios';
 
 export default function Login({ status, canResetPassword }) {
@@ -17,17 +17,19 @@ export default function Login({ status, canResetPassword }) {
     const submit = (e) => {
         e.preventDefault();
 
-       axios.post('/api/login', {
-           username: data.username,
-           password: data.password
-       }).then((response) => {
-           if (response.status === 200) {
-                const token = response.data.result.access_token;
+        axios
+            .post('/api/login', {
+                username: data.username,
+                password: data.password,
+            })
+            .then((response) => {
+                if (response.status === 200) {
+                    const token = response.data.result.access_token;
 
-                sessionStorage.setItem('token', token);
-                window.location.href = route('dashboard');
-           }
-       })
+                    sessionStorage.setItem('token', token);
+                    window.location.href = route('dashboard');
+                }
+            });
     };
 
     return (

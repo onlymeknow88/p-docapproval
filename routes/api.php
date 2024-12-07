@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\API\EInvoiceController;
-use App\Http\Controllers\Admin\API\UserController;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\JwtMiddleware;
+use App\Http\Controllers\Admin\API\UserController;
+use App\Http\Controllers\Admin\API\EInvoiceController;
+use App\Http\Controllers\Admin\API\OrchartApprovalController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 // Route::get('/user', function (Request $request) {
@@ -30,6 +32,12 @@ Route::middleware(['jwt.auth'])->group(function () {
             Route::post('user/{id}', 'update');
             Route::get('user/check-username', 'checkUsername');
             Route::delete('user/{id}/destroy', 'destroy');
+        });
+        Route::controller(OrchartApprovalController::class)->group(function () {
+            Route::get('orchart-approval', 'index');
+            Route::post('orchart-approval', 'store');
+            Route::post('orchart-approval/{id}', 'update');
+            Route::delete('orchart-approval/{id}/destroy', 'destroy');
         });
     });
 });

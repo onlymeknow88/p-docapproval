@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Validation\ValidationException;
 
@@ -54,6 +55,8 @@ class AuthenticatedSessionController extends Controller
 
             $token = JWTAuth::fromUser($vendor);
 
+            // Session::put('token', $token);
+
             return ResponseFormatter::success([
                 'access_token' => $token,
                 'token_type' => 'Bearer',
@@ -74,6 +77,8 @@ class AuthenticatedSessionController extends Controller
                 auth('api')->login($user);
 
                 $token = JWTAuth::fromUser($user);
+
+                // Session::put('token', $token);
 
                 return ResponseFormatter::success([
                     'access_token' => $token,
