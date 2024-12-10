@@ -9,21 +9,21 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/Components/ui/alert-dialog';
+import { IconArrowsUpDown, IconChevronLeft, IconChevronRight, IconRefresh, IconTrash } from '@tabler/icons-react';
 import { Pagination, PaginationContent } from '@/Components/ui/pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { IconArrowsUpDown, IconChevronLeft, IconChevronRight, IconRefresh, IconTrash } from '@tabler/icons-react';
 import { flexRender, getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
+import Edit from '../edit/edit';
 import { Input } from '@/Components/ui/input';
-import callAPI from '@/config/callAPI';
 import axios from 'axios';
+import callAPI from '@/config/callAPI';
 import { toast } from 'sonner';
-import Edit from '../edit';
 
-export function DataTable({ setRefreshFunction }) {
+export function DataTable({ setRefreshFunction, vendors, project_types, units }) {
     const [currentPage, setCurrentPage] = useState(0);
     const [perPage, setPerPage] = useState(10);
     const [globalFilter, setGlobalFilter] = useState('');
@@ -43,35 +43,42 @@ export function DataTable({ setRefreshFunction }) {
             cell: ({ row }) => row.index + 1 + (currentPage - 1) * perPage,
         },
         {
-            accessorKey: 'CompanyId',
-            header: 'Company',
+            accessorKey: 'PONum',
+            header: 'PO Number',
         },
         {
-            accessorKey: 'DeptId',
-            header: 'Dept', // Plain string
+            accessorKey: 'ProjectName',
+            header: 'Project Name', // Plain string
         },
         {
-            accessorKey: 'Name',
-            header: 'Name', // Plain string
+            accessorKey: 'Abbreviation',
+            header: 'Abbreviation', // Plain string
         },
         {
-            accessorKey: 'Position',
-            header: 'Position', // Plain string
+            accessorKey: 'ProjectValue',
+            header: 'Project Value', // Plain string
         },
         {
-            accessorKey: 'Checker',
-            header: 'Checker', // Plain string
+            accessorKey: 'VendorId',
+            header: 'Vendor ID', // Plain string
         },
         {
-            accessorKey: 'ReportTo',
-            header: 'ReportTo', // Plain string
+            accessorKey: 'ProjectType',
+            header: 'Project Type', // Plain string
         },
         {
             accessorKey: 'aksi',
             header: 'Aksi', // Plain string,
             cell: ({ row }) => (
                 <div className="flex items-center gap-x-1">
-                    <Edit row={row.original} refreshData={fetchVendors} />
+                    <Edit
+                        id={row.original.id}
+                        row={row.original}
+                        refreshData={fetchVendors}
+                        vendors={vendors}
+                        project_types={project_types}
+                        units={units}
+                    />
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <Button variant="red" size="sm">
@@ -100,7 +107,7 @@ export function DataTable({ setRefreshFunction }) {
     ];
 
     function deleteData(id) {
-        const url = '/api/admin/orchart-approval/' + id + '/destroy';
+        const url = '/api/ami/project/' + id + '/destroy';
 
         return callAPI({
             url,
@@ -125,7 +132,7 @@ export function DataTable({ setRefreshFunction }) {
     const fetchVendors = async () => {
         try {
             setIsLoading(true);
-            const response = await axios.get('/api/admin/orchart-approval', {
+            const response = await axios.get('/api/ami/project', {
                 params: {
                     page: currentPage,
                     load: perPage,
@@ -251,7 +258,7 @@ export function DataTable({ setRefreshFunction }) {
                                                 </span>
 
                                                 {/* Manual Sorting Button */}
-                                                {!['DeptId', 'Position', 'Checker', 'ReportTo', 'aksi', '#'].includes(
+                                                {!['aksi', '#', 'Abbreviation', 'VendorId', 'ProjectType'].includes(
                                                     header.column.id,
                                                 ) && (
                                                     <Button

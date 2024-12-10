@@ -1,9 +1,9 @@
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
+import { MultiSelect } from '@/Components/MultiSelect';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { MultiSelect } from '@/Components/MultiSelect';
 
 export function Create({ data, setData, handleSubmit, errors }) {
     const options = [
@@ -17,10 +17,9 @@ export function Create({ data, setData, handleSubmit, errors }) {
     };
 
     const handleSelectChange = (field) => (selectedValue) => {
-        setData(field, selectedValue); 
+        setData(field, selectedValue);
     };
 
-    
     return (
         <>
             <div className="grid gap-4">
@@ -69,7 +68,7 @@ export function Create({ data, setData, handleSubmit, errors }) {
                             // isFocused={true}
                             onChange={(e) => setData(e.target.name, e.target.value)}
                         />
-                         {errors.Name && <span className="text-red-500 text-sm">{errors.Name}</span>}
+                        {errors.Name && <span className="text-red-500 text-sm">{errors.Name}</span>}
                     </div>
                 </div>
                 <div className="flex items-center space-x-2">

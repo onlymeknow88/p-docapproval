@@ -10,6 +10,7 @@ import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function Edit({ row, refreshData }) {
+    
     const { data, setData } = useForm({
         name: row?.name || '',
         username: row?.username || '',

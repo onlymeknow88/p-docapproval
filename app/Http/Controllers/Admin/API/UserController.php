@@ -14,30 +14,35 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $data = User::query();
+        try {
+            $data = User::query();
 
-        if ($request->search) {
-            $data->where('username', 'like', '%' . $request->search . '%')
-                ->orWhere('name', 'like', '%' . $request->search . '%')
-                ->orWhere('email', 'like', '%' . $request->search . '%');
-        }
-
-        if ($request->filter && $request->direction) {
-            $data->orderBy($request->filter, $request->direction);
-        }
-
-        if ($request->id) {
-            $user = User::find($request->id);
-
-            ResponseFormatter::success(
-                $user,
-                'Data berhasil ditampilkan',
+            if ($request->search) {
+                $data->where('username', 'like', '%' . $request->search . '%')
+                    ->orWhere('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('email', 'like', '%' . $request->search . '%');
+            }
+    
+            if ($request->filter && $request->direction) {
+                $data->orderBy($request->filter, $request->direction);
+            }
+    
+            if ($request->id) {
+                $user = User::find($request->id);
+    
+                ResponseFormatter::success(
+                    $user,
+                    'Data berhasil ditampilkan',
+                );
+            }
+    
+            return ResponseFormatter::success(
+                $data->paginate($request->load ?? 10)
             );
+        } catch (\Exception $e) {
+            return ResponseFormatter::error($e->getMessage());
         }
-
-        return ResponseFormatter::success(
-            $data->paginate($request->load ?? 10)
-        );
+       
     }
 
     public function store(Request $request)

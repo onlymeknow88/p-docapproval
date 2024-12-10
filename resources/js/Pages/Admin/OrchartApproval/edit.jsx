@@ -1,15 +1,15 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
+import { MultiSelect } from '@/Components/MultiSelect';
 import { Button } from '@/Components/ui/button';
-import { IconPencil } from '@tabler/icons-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { MultiSelect } from '@/Components/MultiSelect';
 import callAPI from '@/config/callAPI';
-import { toast } from 'sonner';
 import { useForm } from '@inertiajs/react';
+import { IconPencil } from '@tabler/icons-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export default function Edit({ row, refreshData }) {
     const { data, setData } = useForm({
@@ -20,8 +20,6 @@ export default function Edit({ row, refreshData }) {
         Position: row?.Position || '',
         Checker: row?.Checker.split('; ').map((item) => item.trim()) || '',
     });
-
-    console.log(data);
 
     const options = [
         { value: 'a@a.com', label: 'a@a.com' },

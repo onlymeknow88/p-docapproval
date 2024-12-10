@@ -7,6 +7,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\EInvoiceController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\ProjectController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -29,7 +30,17 @@ Route::prefix('admin')->group(function () {
     });
 });
 
-Route::get('/check-token', [DashboardController::class, 'checkToken']);
+Route::prefix('ami')->group(function (){
+    Route::controller(ProjectController::class)->group(function(){
+        Route::get('project', 'index')->name('ami.project.index');
+    });
+});
+Route::prefix('vendor')->group(function (){
+    Route::controller(ProjectController::class)->group(function(){
+        Route::get('project', 'index')->name('ami.project.index');
+    });
+});
+
 
 
 Route::middleware('auth')->group(function () {

@@ -246,9 +246,11 @@ export function DataTable() {
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex items-center justify-between mt-6 mb-10">
-                <div className="flex-1 text-sm">Total {totalPages} rows</div>
-                <div className="flex items-center space-x-6 lg:space-x-8">
+            <div className="flex flex-col lg:flex-row items-center justify-between mt-6  space-y-4 lg:space-y-0">
+                <div className="flex-1 text-sm text-center lg:text-left">
+                    Total <span className="text-orange-500">{totalPages}</span> rows
+                </div>
+                <div className="flex items-center space-y-4 lg:space-y-0 lg:space-x-6 flex-col lg:flex-row">
                     <div className="flex items-center space-x-2">
                         <p className="text-sm font-medium">Rows per page</p>
                         <Select value={perPage} onValueChange={handlePerPage}>
@@ -264,7 +266,7 @@ export function DataTable() {
                             </SelectContent>
                         </Select>
                     </div>
-                    <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+                    <div className="flex w-full lg:w-[100px] items-center justify-center text-sm font-medium">
                         Page {currentPage} of {lastPage}
                     </div>
                     <div className="flex items-center space-x-2">
@@ -274,7 +276,7 @@ export function DataTable() {
                                     disabled={currentPage === 1 || isLoading}
                                     onClick={handlePrevious}
                                     variant="ghost"
-                                    className="hidden h-8 w-8 p-0 lg:flex"
+                                    className="lg:h-8 lg:w-8 lg:p-0"
                                 >
                                     <IconChevronLeft />
                                 </Button>
@@ -286,7 +288,7 @@ export function DataTable() {
                                     disabled={currentPage === lastPage || isLoading}
                                     onClick={handleNext}
                                     variant="ghost"
-                                    className="hidden h-8 w-8 p-0 lg:flex"
+                                    className="lg:h-8 lg:w-8 lg:p-0"
                                 >
                                     <IconChevronRight />
                                 </Button>

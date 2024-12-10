@@ -1,4 +1,4 @@
-import { IconDashboard, IconUser, IconUserBolt, IconUsersGroup } from '@tabler/icons-react';
+import { IconBook2, IconDashboard, IconUser, IconUserBolt, IconUsersGroup } from '@tabler/icons-react';
 
 import NavLink from '@/Components/NavLink';
 
@@ -11,6 +11,20 @@ export default function Sidebar({ url, auth }) {
                 active={url.startsWith('/dashboard')}
                 title="Dashboard"
                 icon={IconDashboard}
+            />
+            <div className="px-3 py-2 text-sm font-semibold text-foreground">Ami</div>
+            <NavLink
+                url={route('ami.project.index')}
+                active={url.startsWith('/ami/project')}
+                title="Project"
+                icon={IconBook2}
+            />
+            <div className="px-3 py-2 text-sm font-semibold text-foreground">Vendor</div>
+            <NavLink
+                url={route('vendor.project.index')}
+                active={url.startsWith('/project')}
+                title="Project"
+                icon={IconBook2}
             />
             <div className="px-3 py-2 text-sm font-semibold text-foreground">Master</div>
             <NavLink

@@ -8,6 +8,7 @@ use App\Http\Middleware\JwtMiddleware;
 use App\Http\Controllers\Admin\API\UserController;
 use App\Http\Controllers\Admin\API\EInvoiceController;
 use App\Http\Controllers\Admin\API\OrchartApprovalController;
+use App\Http\Controllers\API\ProjectController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 // Route::get('/user', function (Request $request) {
@@ -38,6 +39,20 @@ Route::middleware(['jwt.auth'])->group(function () {
             Route::post('orchart-approval', 'store');
             Route::post('orchart-approval/{id}', 'update');
             Route::delete('orchart-approval/{id}/destroy', 'destroy');
+        });
+
+    });
+
+    Route::prefix('ami')->group(function () {
+
+        Route::controller(ProjectController::class)->group(function () {
+            Route::get('project', 'index');
+            Route::post('project', 'store');
+            Route::post('project/{id}', 'update');
+            Route::delete('project/{id}/destroy', 'destroy');
+
+            Route::get('project/{id}/worksheet-project', 'worksheetIndex');
+            Route::delete('project/{id}/worksheet-project/destroy', 'worksheetDestroy');
         });
     });
 });

@@ -1,10 +1,8 @@
 import { Card, CardContent } from '@/Components/ui/card';
-import { IconPlus, IconUserBolt } from '@tabler/icons-react';
+import { IconUserBolt } from '@tabler/icons-react';
 
 import HeaderTitle from '@/Components/HeaderTitle';
-import { Button } from '@/Components/ui/button';
 import AppLayout from '@/Layouts/AppLayout';
-import { Link } from '@inertiajs/react';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { DataTable } from './data-table/DataTable';
@@ -38,12 +36,6 @@ export default function Index(props) {
                     subtitle={props.page_settings.subtitle}
                     icon={IconUserBolt}
                 />
-                <Button variant="orange" size="lg" asChild>
-                    <Link href="#">
-                        <IconPlus className="size-4" />
-                        Tambah
-                    </Link>
-                </Button>
             </div>
             <Card>
                 {/* <CardHeader>

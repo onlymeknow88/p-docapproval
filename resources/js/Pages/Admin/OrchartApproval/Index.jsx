@@ -2,15 +2,15 @@ import { Card, CardContent } from '@/Components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { IconPlus, IconUsersGroup } from '@tabler/icons-react';
 
-import AppLayout from '@/Layouts/AppLayout';
-import { Button } from '@/Components/ui/button';
-import { Create } from './create';
-import { DataTable } from './data-table/DataTable';
 import HeaderTitle from '@/Components/HeaderTitle';
-import callAPI from '../../../config/callAPI';
-import { toast } from 'sonner';
+import { Button } from '@/Components/ui/button';
+import AppLayout from '@/Layouts/AppLayout';
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
+import { toast } from 'sonner';
+import callAPI from '../../../config/callAPI';
+import { Create } from './create';
+import { DataTable } from './data-table/DataTable';
 
 export default function Index(props) {
     const [open, setOpen] = useState(false);
@@ -37,25 +37,20 @@ export default function Index(props) {
         });
     }
 
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // console.log(data)
         const res = await storeData();
-
-        console.log(res)
 
         if (res.error) {
             setErrors(res.data);
             toast.error(res.message);
+        } else {
+            if (res.data.meta.code === 200) {
+                setOpen(false);
+                toast.success(res.data.meta.message);
+                if (refreshFunction) refreshFunction();
+            }
         }
-
-        if (res.data.meta.code === 200) {
-            setOpen(false);
-            toast.success(res.data.meta.message);
-            if (refreshFunction) refreshFunction();
-        } 
     };
 
     return (
@@ -79,7 +74,6 @@ export default function Index(props) {
                         </DialogHeader>
 
                         <Create data={data} setData={setData} handleSubmit={handleSubmit} errors={errors} />
-                        
                     </DialogContent>
                 </Dialog>
             </div>

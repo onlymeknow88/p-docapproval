@@ -1,12 +1,12 @@
 import { Card, CardContent } from '@/Components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { IconPlus, IconUser } from '@tabler/icons-react';
-import { useState } from 'react';
 
 import HeaderTitle from '@/Components/HeaderTitle';
 import { Button } from '@/Components/ui/button';
 import AppLayout from '@/Layouts/AppLayout';
 import { useForm } from '@inertiajs/react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import callAPI from '../../../config/callAPI';
 import { Create } from './Create';

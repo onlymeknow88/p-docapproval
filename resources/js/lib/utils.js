@@ -28,3 +28,21 @@ export const checkToken = async () => {
         return false;
     }
 };
+
+export const formatWithoutRupiah = (number) => {
+    const formatter = new Intl.NumberFormat('id-ID', {
+        minimumFractionDigits: 0,
+    });
+
+    return formatter.format(number);
+};
+
+export const formatRupiah = (number) => {
+    const formatter = new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+    });
+  
+    return formatter.format(number);
+  };

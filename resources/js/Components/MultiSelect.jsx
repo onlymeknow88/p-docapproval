@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { CheckIcon, ChevronDown, WandSparkles, XCircle, XIcon } from 'lucide-react';
 import {
     Command,
     CommandEmpty,
@@ -11,6 +10,7 @@ import {
     CommandSeparator,
 } from '@/Components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover';
+import { CheckIcon, ChevronDown } from 'lucide-react';
 
 import { Badge } from '@/Components/ui/badge';
 import { Button } from '@/Components/ui/button';
@@ -183,7 +183,11 @@ export const MultiSelect = React.forwardRef(
                 </PopoverTrigger>
                 <PopoverContent className="w-[400px] p-0" align="start" onEscapeKeyDown={() => setIsPopoverOpen(false)}>
                     <Command>
-                        <CommandInput className="border-none focus:ring-0" placeholder="Search..." onKeyDown={handleInputKeyDown} />
+                        <CommandInput
+                            className="border-none focus:ring-0"
+                            placeholder="Search..."
+                            onKeyDown={handleInputKeyDown}
+                        />
                         <CommandList>
                             <CommandEmpty>No results found.</CommandEmpty>
                             <CommandGroup>
