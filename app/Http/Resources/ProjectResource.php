@@ -19,6 +19,8 @@ class ProjectResource extends JsonResource
             'PONum' => $this->PONum,
             'ProjectName' => $this->ProjectName,
             'VendorId' => $this->VendorId,
+            'Abbreviation' => $this->vendor->first()->Abbreviation,
+            'VendorName' => $this->vendor->first()->VendorName,
             'ProjectValue' => $this->ProjectValue,
             'ProjectType' => $this->ProjectType,
             'DpValue' => $this->DpValue,

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('UrlPath',400);
             $table->bigInteger('SizeKB');
             $table->string('CreatedBy',45);
-            $table->string('UpdatedBy',45);
+            $table->string('UpdatedBy',45)->nullable();
             $table->timestamps();
 
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');

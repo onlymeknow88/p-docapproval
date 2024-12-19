@@ -16,6 +16,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { flexRender, getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 import { useEffect, useState } from 'react';
 
+import { Badge } from '@/Components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Edit from '../edit/edit';
 import { Input } from '@/Components/ui/input';
@@ -23,7 +24,7 @@ import axios from 'axios';
 import callAPI from '@/config/callAPI';
 import { toast } from 'sonner';
 
-export function DataTable({ setRefreshFunction, vendors, project_types, units }) {
+export function DataTable({ setRefreshFunction }) {
     const [currentPage, setCurrentPage] = useState(0);
     const [perPage, setPerPage] = useState(10);
     const [globalFilter, setGlobalFilter] = useState('');
@@ -44,42 +45,56 @@ export function DataTable({ setRefreshFunction, vendors, project_types, units })
             cell: ({ row }) => row.index + 1 + (currentPage - 1) * perPage,
         },
         {
+            accessorKey: 'DocNum',
+            header: 'Document Number',
+        },
+        {
             accessorKey: 'PONum',
-            header: 'PO Number',
+            header: 'PO No', // Plain string
         },
         {
             accessorKey: 'ProjectName',
             header: 'Project Name', // Plain string
         },
         {
-            accessorKey: 'Abbreviation',
-            header: 'Abbreviation', // Plain string
-        },
-        {
             accessorKey: 'ProjectValue',
             header: 'Project Value', // Plain string
         },
         {
-            accessorKey: 'VendorId',
-            header: 'Vendor ID', // Plain string
+            accessorKey: 'DocStatus',
+            header: 'Document Status', // Plain string
+            cell: ({ row }) => (
+                <>
+                    {row.original.DocStatus == 'Draft' && <Badge variant="secondary">Draft</Badge>}
+                    {row.original.DocStatus == 'Submited' && <Badge variant="blue">Submited For Approval</Badge>}
+                </>
+            ),
         },
         {
-            accessorKey: 'ProjectType',
-            header: 'Project Type', // Plain string
+            accessorKey: 'ApprovalStatus',
+            header: 'Approval Status', // Plain string
+            cell: ({ row }) => (
+                <>
+                    {row.original.ApprovalStatus == 'Draft' ? (
+                        <Badge variant="secondary">Belum Submited for Approval</Badge>
+                    ) : (
+                        <>
+                            {row.original.ApprovalStatus == 'Approved' && <Badge variant="green">Approved</Badge>}
+                            {row.original.ApprovalStatus == 'Rejected' && <Badge variant="red">Rejected</Badge>}
+                            {row.original.ApprovalStatus == 'Pending' && <Badge variant="yellow">Pending</Badge>}
+                            {row.original.ApprovalStatus == 'OnProgress' && <Badge variant="yellow">OnProgress</Badge>}
+                        </>
+                    )}
+                    {/* <Badge variant="yellow">{row.original.ApprovalStatus}</Badge> */}
+                </>
+            ),
         },
         {
             accessorKey: 'aksi',
             header: 'Aksi', // Plain string,
             cell: ({ row }) => (
                 <div className="flex items-center gap-x-1">
-                    <Edit
-                        id={row.original.id}
-                        row={row.original}
-                        refreshData={fetchVendors}
-                        vendors={vendors}
-                        project_types={project_types}
-                        units={units}
-                    />
+                    <Edit id={row.original.id} row={row.original} refreshData={fetchVendors} />
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <Button variant="red" size="sm">
@@ -108,7 +123,7 @@ export function DataTable({ setRefreshFunction, vendors, project_types, units })
     ];
 
     function deleteData(id) {
-        const url = '/api/ami/project/' + id + '/destroy';
+        const url = '/api/vendor/project-vendor/' + id + '/destroy';
 
         return callAPI({
             url,
@@ -121,6 +136,7 @@ export function DataTable({ setRefreshFunction, vendors, project_types, units })
         try {
             setIsLoading(true);
             const res = await deleteData(id);
+
             if (res.data.meta.code === 200) {
                 setTimeout(() => {
                     toast.success('Data berhasil dihapus');
@@ -136,7 +152,7 @@ export function DataTable({ setRefreshFunction, vendors, project_types, units })
     const fetchVendors = async () => {
         try {
             setIsLoadingPage(true);
-            const response = await axios.get('/api/ami/project', {
+            const response = await axios.get('/api/vendor/project-vendor', {
                 params: {
                     page: currentPage,
                     load: perPage,
@@ -186,7 +202,7 @@ export function DataTable({ setRefreshFunction, vendors, project_types, units })
     useEffect(() => {
         fetchVendors();
         setRefreshFunction(() => fetchVendors);
-    }, [perPage, currentPage, globalFilter, sorting, setRefreshFunction, isLoadingPage, isLoading]);
+    }, [perPage, currentPage, globalFilter, sorting, setRefreshFunction]);
 
     const handlePerPage = (e) => {
         // console.log(e)
@@ -262,7 +278,7 @@ export function DataTable({ setRefreshFunction, vendors, project_types, units })
                                                 </span>
 
                                                 {/* Manual Sorting Button */}
-                                                {!['aksi', '#', 'Abbreviation', 'VendorId', 'ProjectType'].includes(
+                                                {!['aksi', '#', 'ProjectValue', 'VendorId', 'ProjectType'].includes(
                                                     header.column.id,
                                                 ) && (
                                                     <Button
@@ -301,7 +317,7 @@ export function DataTable({ setRefreshFunction, vendors, project_types, units })
                             ))
                         ) : (
                             <>
-                                {isLoading ? (
+                                {isLoadingPage ? (
                                     <TableRow>
                                         <TableCell colSpan={columns.length} className="h-24 text-center">
                                             Loading...

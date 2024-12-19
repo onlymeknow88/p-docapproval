@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('Text');
             $table->string('Value');
             $table->bigInteger('IsActive');
+            $table->string('CreatedBy',45);
+            $table->string('UpdatedBy',45)->nullable();
             $table->timestamps();
         });
     }

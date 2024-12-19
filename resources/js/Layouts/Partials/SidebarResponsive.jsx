@@ -4,6 +4,9 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import NavLinkResponsive from '@/Components/NavLinkResponsive';
 
 export default function SidebarResponsive({ url, auth }) {
+    const encodedType = sessionStorage.getItem('type');
+
+    const type = atob(encodedType);
     return (
         <nav className="grid gap-6 text-lg font-medium">
             <ApplicationLogo />
@@ -15,7 +18,29 @@ export default function SidebarResponsive({ url, auth }) {
                     title="Dashboard"
                     icon={IconDashboard}
                 />
-                <div className="px-3 py-2 text-sm font-semibold text-foreground">AMI</div>
+                {type === 'ami' && (
+                    <>
+                        <div className="px-3 py-2 text-sm font-semibold text-foreground">Ami</div>
+                        <NavLinkResponsive
+                            url={route('ami.project.index')}
+                            active={url.startsWith('/ami/project')}
+                            title="Project"
+                            icon={IconBook2}
+                        />
+                    </>
+                )}
+                {type === 'vendor' && (
+                    <>
+                        <div className="px-3 py-2 text-sm font-semibold text-foreground">Vendor</div>
+                        <NavLinkResponsive
+                            url={route('vendor.project-vendor.index')}
+                            active={url.startsWith('/vendor/project-vendor')}
+                            title="Project"
+                            icon={IconBook2}
+                        />
+                    </>
+                )}
+                {/* <div className="px-3 py-2 text-sm font-semibold text-foreground">AMI</div>
                 <NavLinkResponsive
                     url={route('vendor.project.index')}
                     active={url.startsWith('/vendor/project')}
@@ -24,11 +49,11 @@ export default function SidebarResponsive({ url, auth }) {
                 />
                 <div className="px-3 py-2 text-sm font-semibold text-foreground">Vendor</div>
                 <NavLinkResponsive
-                    url={route('vendor.project.index')}
-                    active={url.startsWith('/vendor/project')}
+                    url={route('vendor.project-vendor.index')}
+                    active={url.startsWith('/vendor/project-vendor')}
                     title="Project"
                     icon={IconBook2}
-                />
+                /> */}
                 <div className="px-3 py-2 text-sm font-semibold text-foreground">Master</div>
                 <NavLinkResponsive
                     url={route('admin.user.index')}

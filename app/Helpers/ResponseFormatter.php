@@ -37,9 +37,9 @@ class ResponseFormatter
         if ($data instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator) {
             self::$response['result'] = [
                 'current_page' => $data->currentPage(),
-                'data' => $resourceClass 
-                ? $resourceClass::collection($data->items()) 
-                : $data->items(),  
+                'data' => $resourceClass
+                ? $resourceClass::collection($data->items())
+                : $data->items(),
                 'first_page_url' => $data->url(1),
                 'from' => $data->firstItem(),
                 'last_page' => $data->lastPage(),

@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('Position',150);
             $table->string('Checker',200)->nullable();
             $table->integer('ReportTo')->nullable();
-            $table->string('CreatedBy');
+            $table->string('CreatedBy',45);
+            $table->string('UpdatedBy',45)->nullable();
             $table->timestamps();
         });
     }

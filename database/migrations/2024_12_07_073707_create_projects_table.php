@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('PICIdCardNo',50)->nullable();
             $table->string('PICAddress',50)->nullable();
             $table->string('CreatedBy',45);
-            $table->string('UpdatedBy',45);
+            $table->string('UpdatedBy',45)->nullable();
             $table->timestamps();
         });
     }

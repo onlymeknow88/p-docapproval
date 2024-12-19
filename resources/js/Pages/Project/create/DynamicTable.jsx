@@ -3,6 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { formatWithoutRupiah } from '@/lib/utils';
 import { useState } from 'react';
 
 const DynamicTable = ({ setData, data, units, errors }) => {
@@ -169,8 +170,8 @@ const DynamicTable = ({ setData, data, units, errors }) => {
                                 <td className="border p-2 text-[13px]">{row.JobDescription}</td>
                                 <td className="border p-2 text-[13px]">{row.Target}</td>
                                 <td className="border p-2 text-[13px]">{row.Unit}</td>
-                                <td className="border p-2 text-[13px]">{formatCurrency(row.UnitPriceRP)}</td>
-                                <td className="border p-2 text-[13px]">
+                                <td className="border p-2 text-[13px] w-[160px]">{formatCurrency(row.UnitPriceRP)}</td>
+                                <td className="border p-2 text-[13px] w-[100px]">
                                     <div className="flex space-x-2">
                                         <Button variant="outline" size="icon" onClick={() => startEditingRow(row)}>
                                             <Pencil className="h-4 w-4" />
@@ -190,7 +191,7 @@ const DynamicTable = ({ setData, data, units, errors }) => {
                             <td className="border p-2">{rows.length + 1}</td>
                             <td className="border p-2">
                                 <Input
-                                className="w-full p-2 h-9 border rounded"
+                                    className="w-full p-2 h-9 border rounded"
                                     value={newRow.JobGroup || ''}
                                     onChange={(e) => handleInputChange(e, 'JobGroup')}
                                     placeholder="Group"
@@ -198,7 +199,7 @@ const DynamicTable = ({ setData, data, units, errors }) => {
                             </td>
                             <td className="border p-2">
                                 <Input
-                                className="w-full p-2 h-9 border rounded"
+                                    className="w-full p-2 h-9 border rounded"
                                     value={newRow.JobDescription || ''}
                                     onChange={(e) => handleInputChange(e, 'JobDescription')}
                                     placeholder="Project Description"
@@ -206,7 +207,7 @@ const DynamicTable = ({ setData, data, units, errors }) => {
                             </td>
                             <td className="border p-2">
                                 <Input
-                                className="w-full p-2 h-9 border rounded"
+                                    className="w-full p-2 h-9 border rounded"
                                     value={newRow.Target || ''}
                                     onChange={(e) => handleInputChange(e, 'Target')}
                                     placeholder="Target"
@@ -231,8 +232,8 @@ const DynamicTable = ({ setData, data, units, errors }) => {
                             </td>
                             <td className="border p-2">
                                 <Input
-                                className="w-full p-2 h-9 border rounded"
-                                    value={newRow.UnitPriceRP || 0}
+                                    className="w-full p-2 h-9 border rounded"
+                                    value={formatWithoutRupiah(newRow.UnitPriceRP || 0)}
                                     onChange={(e) => handleInputChange(e, 'UnitPriceRP')}
                                     placeholder="Unit Price"
                                 />

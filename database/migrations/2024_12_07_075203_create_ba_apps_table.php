@@ -22,7 +22,7 @@ return new class extends Migration
             $table->longText('UrlCallBack')->nullable();
             $table->string('ApprovalStatus',10);
             $table->string('CreatedBy',45);
-            $table->string('UpdatedBy',45);
+            $table->string('UpdatedBy',45)->nullable();
             $table->timestamps();
 
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');

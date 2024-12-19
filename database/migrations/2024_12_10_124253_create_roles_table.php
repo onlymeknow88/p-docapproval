@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('master_matrix_approvals', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->string('MaType',45);
-            $table->string('WfName',45)->unique();
-            $table->bigInteger('MinValue');
-            $table->bigInteger('UptoValue');
-            $table->string('Approval',50);
+            $table->string('user')->nullable();
+            $table->string('name')->nullable();
             $table->string('CreatedBy',45);
             $table->string('UpdatedBy',45)->nullable();
             $table->timestamps();
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('master_matrix_approvals');
+        Schema::dropIfExists('roles');
     }
 };

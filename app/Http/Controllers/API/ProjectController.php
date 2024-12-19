@@ -42,48 +42,48 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         try {
-            // $validator = Validator::make($request->all(), [
-            //     // Validate main project fields
-            //     'PONum' => 'required|string',
-            //     'ProjectName' => 'required|string',
-            //     'VendorId' => 'required|integer',
-            //     'ProjectValue' => 'required|numeric',
-            
-            //     // Validate worksheet_projects array
-            //     'worksheet_projects' => 'required|array',
-            //     'worksheet_projects.*.JobGroup' => 'required|string',
-            //     'worksheet_projects.*.JobDescription' => 'required|string',
-            //     'worksheet_projects.*.Unit' => 'required|string',
-            //     'worksheet_projects.*.UnitPriceRP' => 'required|numeric',
-            //     'worksheet_projects.*.Target' => 'required|integer|min:0',
-            // ], [
-            //     // Custom error messages for main project fields
-            //     'PONum.required' => 'PONum harus diisi',
-            //     'ProjectName.required' => 'ProjectName harus diisi',
-            //     'VendorId.required' => 'VendorId harus diisi',
-            //     'ProjectValue.required' => 'ProjectValue harus diisi',
-            
-            //     // Custom error messages for worksheet_projects fields
-                // 'worksheet_projects.required' => 'Worksheet projects harus diisi',
-                // 'worksheet_projects.array' => 'Worksheet projects harus berupa array',
-            //     'worksheet_projects.*.JobGroup.required' => 'JobGroup harus diisi',
-            //     'worksheet_projects.*.JobDescription.required' => 'JobDescription harus diisi',
-            //     'worksheet_projects.*.Unit.required' => 'Unit harus diisi',
-            //     'worksheet_projects.*.UnitPriceRP.required' => 'UnitPriceRP harus diisi',
-            //     'worksheet_projects.*.Target.required' => 'Target harus diisi',
-            //     'worksheet_projects.*.Target.integer' => 'Target harus berupa angka',
-            //     'worksheet_projects.*.Target.min' => 'Target tidak boleh kurang dari 0',
-            // ]);
-            
-            // // Check for validation errors
-            // if ($validator->fails()) {
-            //     return response()->json([
-            //         'error' => true,
-            //         'message' => 'Validation error',
-            //         'data' => $validator->errors()
-            //     ], 422);
-            // }
-            
+            $validator = Validator::make($request->all(), [
+                // Validate main project fields
+                'PONum' => 'required|string',
+                'ProjectName' => 'required|string',
+                'VendorId' => 'required|integer',
+                'ProjectValue' => 'required|numeric',
+
+                // Validate worksheet_projects array
+                'worksheet_projects' => 'required|array',
+                'worksheet_projects.*.JobGroup' => 'required|string',
+                'worksheet_projects.*.JobDescription' => 'required|string',
+                'worksheet_projects.*.Unit' => 'required|string',
+                'worksheet_projects.*.UnitPriceRP' => 'required|numeric',
+                'worksheet_projects.*.Target' => 'required|integer|min:0',
+            ], [
+                // Custom error messages for main project fields
+                'PONum.required' => 'PONum harus diisi',
+                'ProjectName.required' => 'ProjectName harus diisi',
+                'VendorId.required' => 'VendorId harus diisi',
+                'ProjectValue.required' => 'ProjectValue harus diisi',
+
+                // Custom error messages for worksheet_projects fields
+                'worksheet_projects.required' => 'Worksheet projects harus diisi',
+                'worksheet_projects.array' => 'Worksheet projects harus berupa array',
+                'worksheet_projects.*.JobGroup.required' => 'JobGroup harus diisi',
+                'worksheet_projects.*.JobDescription.required' => 'JobDescription harus diisi',
+                'worksheet_projects.*.Unit.required' => 'Unit harus diisi',
+                'worksheet_projects.*.UnitPriceRP.required' => 'UnitPriceRP harus diisi',
+                'worksheet_projects.*.Target.required' => 'Target harus diisi',
+                'worksheet_projects.*.Target.integer' => 'Target harus berupa angka',
+            ]);
+
+            // Check for validation errors
+            if ($validator->fails()) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Validation error',
+                    'data' => $validator->errors()
+                ], 422);
+            }
+
+
 
             $data = $request->except('VendorId', 'JobGroup', 'JobDescription', 'Unit', 'UnitPriceRP', 'Target','worksheet_projects');
 
@@ -147,7 +147,7 @@ class ProjectController extends Controller
             //     'ProjectName' => 'required|string',
             //     'VendorId' => 'required|integer',
             //     'ProjectValue' => 'required|numeric',
-            
+
             //     // Validate worksheet_projects array
             //     'worksheet_projects' => 'required|array',
             //     'worksheet_projects.*.JobGroup' => 'required|string',
@@ -161,7 +161,7 @@ class ProjectController extends Controller
             //     'ProjectName.required' => 'ProjectName harus diisi',
             //     'VendorId.required' => 'VendorId harus diisi',
             //     'ProjectValue.required' => 'ProjectValue harus diisi',
-            
+
             //     // Custom error messages for worksheet_projects fields
                 // 'worksheet_projects.required' => 'Worksheet projects harus diisi',
                 // 'worksheet_projects.array' => 'Worksheet projects harus berupa array',
@@ -173,7 +173,7 @@ class ProjectController extends Controller
             //     'worksheet_projects.*.Target.integer' => 'Target harus berupa angka',
             //     'worksheet_projects.*.Target.min' => 'Target tidak boleh kurang dari 0',
             // ]);
-            
+
             // // Check for validation errors
             // if ($validator->fails()) {
             //     return response()->json([
@@ -182,7 +182,7 @@ class ProjectController extends Controller
             //         'data' => $validator->errors()
             //     ], 422);
             // }
-            
+
 
             $data = $request->except('VendorId', 'JobGroup', 'JobDescription', 'Unit', 'UnitPriceRP', 'Target','worksheet_projects');
 
@@ -210,7 +210,7 @@ class ProjectController extends Controller
             foreach ($request->worksheet_projects as $worksheet) {
                 $worksheetProjects[] = WorksheetProject::updateOrCreate(
                     [
-                        'project_id' => $project->id,    
+                        'project_id' => $project->id,
                         'JobGroup' => $worksheet['JobGroup'],
                     ],
                     [
@@ -223,8 +223,8 @@ class ProjectController extends Controller
                     ]
                 );
             }
-            
-            
+
+
 
             $result = [
                 'project' => $project,
@@ -249,16 +249,16 @@ class ProjectController extends Controller
             if (!$project) {
                 return ResponseFormatter::error(null, 'Project not found', 404);
             }
-    
+
             // Begin a transaction
             DB::beginTransaction();
-    
+
             // Delete related worksheet projects
             WorksheetProject::where('project_id', $project->id)->delete();
-    
+
             // Delete the project
             $project->delete();
-    
+
             // Commit the transaction
             DB::commit();
             return ResponseFormatter::success($project, 'Data berhasil dihapus');

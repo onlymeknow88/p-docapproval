@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\API\UserController;
 use App\Http\Controllers\Admin\API\EInvoiceController;
 use App\Http\Controllers\Admin\API\OrchartApprovalController;
 use App\Http\Controllers\API\ProjectController;
+use App\Http\Controllers\API\ProjectVendorController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 // Route::get('/user', function (Request $request) {
@@ -53,6 +54,24 @@ Route::middleware(['jwt.auth'])->group(function () {
 
             Route::get('project/{id}/worksheet-project', 'worksheetIndex');
             Route::delete('project/{id}/worksheet-project/destroy', 'worksheetDestroy');
+        });
+    });
+    Route::prefix('vendor')->group(function () {
+
+        Route::controller(ProjectVendorController::class)->group(function () {
+            Route::post('project-vendor/upload-file', 'uploadFile');
+            Route::get('project-vendor', 'index');
+            Route::get('project-vendor/{id}/show-project', 'showProject');
+            Route::post('project-vendor', 'store');
+            Route::post('project-vendor/{id}', 'update');
+            Route::delete('project-vendor/{id}/destroy', 'destroy');
+
+            Route::get('project-vendor/{id}/term-sheet', 'worksheetIndex');
+
+            Route::delete('project-vendor/delete-file/{id}', 'deleteFile');
+
+            // Route::get('project/{id}/worksheet-project', 'worksheetIndex');
+            // Route::delete('project/{id}/worksheet-project/destroy', 'worksheetDestroy');
         });
     });
 });

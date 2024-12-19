@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('project_id');
             $table->string('BAType',10);
-            $table->bigInteger('WorkProgressPercent');
+            $table->decimal('WorkProgressPercent',5,2);
             $table->string('DocNum',30);
             $table->string('CreatedBy',45);
-            $table->string('UpdatedBy',45);
+            $table->string('UpdatedBy',45)->nullable();
             $table->timestamps();
 
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');

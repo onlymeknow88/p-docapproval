@@ -25,7 +25,13 @@ export default function Login({ status, canResetPassword }) {
             .then((response) => {
                 if (response.status === 200) {
                     const token = response.data.result.access_token;
+                    const type = response.data.result.type;
+                    const user = response.data.result.user;
+                    const encodedType = btoa(type);
+                    const encodedUser = btoa(user);
 
+                    sessionStorage.setItem('type', encodedType);
+                    sessionStorage.setItem('user', encodedUser);
                     sessionStorage.setItem('token', token);
                     window.location.href = route('dashboard');
                 }

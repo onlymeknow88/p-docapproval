@@ -1,16 +1,15 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 import { Button } from '@/Components/ui/button';
-import { IconPencil } from '@tabler/icons-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import callAPI from '@/config/callAPI';
-import { toast } from 'sonner';
 import { useForm } from '@inertiajs/react';
+import { IconPencil } from '@tabler/icons-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export default function Edit({ row, refreshData }) {
-    
     const { data, setData } = useForm({
         name: row?.name || '',
         username: row?.username || '',

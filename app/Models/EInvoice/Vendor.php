@@ -10,9 +10,9 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class Vendor extends Authenticatable implements JWTSubject
 {
 
-    protected $connection = 'sqlsrv';
+    // protected $connection = 'sqlsrv';
 
-    protected $table = 'vendor';
+    protected $table = 'vendors';
 
     protected $fillable = [
         'UserName',

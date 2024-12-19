@@ -12,4 +12,15 @@ class Project extends Model
     {
         return $this->hasMany(WorksheetProject::class);
     }
+
+    public function vendor()
+    {
+        return $this->belongsTo(EInvoice\Vendor::class,'VendorId','VendorNo');
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class);
+    }
+
 }

@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('berita_acara_id');
             $table->string('worksheet_project_id')->nullable();
-            $table->bigInteger('Realisation');
-            $table->bigInteger('Invoice');
+            $table->decimal('Realisation',10,2);
+            $table->decimal('Invoice',12,2);
             $table->string('CreatedBy',45);
-            $table->string('UpdatedBy',45);
+            $table->string('UpdatedBy',45)->nullable();
             $table->timestamps();
 
             $table->foreign('berita_acara_id')->references('id')->on('berita_acaras')->onDelete('cascade');

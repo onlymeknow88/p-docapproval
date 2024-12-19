@@ -1,20 +1,19 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
-import { Button } from '@/Components/ui/button';
 import ComboBox from '@/Components/ComboBox';
 import DatePickerWithRange from '@/Components/DatePickerWithRange';
-import DynamicTable from './DynamicTable';
-import { IconPencil } from '@tabler/icons-react';
+import { Button } from '@/Components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/Components/ui/separator';
-import callAPI from '../../../config/callAPI';
 import { formatRupiah } from '@/lib/utils';
 import { useForm } from '@inertiajs/react';
+import { IconPencil } from '@tabler/icons-react';
 import { useState } from 'react';
+import callAPI from '../../../config/callAPI';
+import DynamicTable from './DynamicTable';
 
 export default function Edit({ row, refreshData, vendors, project_types, units }) {
-   
     const { data, setData } = useForm({
         id: row?.id,
         PONum: row?.PONum || '',
@@ -39,7 +38,6 @@ export default function Edit({ row, refreshData, vendors, project_types, units }
         worksheet_projects: row?.worksheet_projects || [],
     });
 
-
     const [open, setOpen] = useState(false);
     const [errors, setErrors] = useState({});
 
@@ -53,7 +51,7 @@ export default function Edit({ row, refreshData, vendors, project_types, units }
             ProjectValue: row?.ProjectValue || 0,
             VendorId: row?.VendorId || '',
             ProjectType: row?.ProjectType || '',
-            
+
             DpValue: row?.DpValue || 0,
             DpValidityPeriodStart: row?.DpValidityPeriodStart || '',
             DpValidityPeriodEnd: row?.DpValidityPeriodEnd || '',
@@ -130,7 +128,7 @@ export default function Edit({ row, refreshData, vendors, project_types, units }
         }
     };
 
-    console.log(row)
+    console.log(row);
 
     function updateData() {
         const url = '/api/ami/project/' + row?.id;
@@ -161,7 +159,6 @@ export default function Edit({ row, refreshData, vendors, project_types, units }
             }
         }
     };
-
 
     return (
         <>
@@ -329,17 +326,19 @@ export default function Edit({ row, refreshData, vendors, project_types, units }
                     {/* DynamicTable */}
                     <div>
                         <h1 className="font-bold">TermSheet</h1>
-                        <DynamicTable setData={setData} data={data} units={units} errors={errors} refreshData={refreshData}/>
+                        <DynamicTable
+                            setData={setData}
+                            data={data}
+                            units={units}
+                            errors={errors}
+                            refreshData={refreshData}
+                        />
                     </div>
                     <div className="flex justify-end mt-4 gap-4">
                         <Button type="button" variant="secondary" onClick={() => setOpen(false)}>
                             Cancel
                         </Button>
-                        <Button
-                            type="button"
-                            variant="orange"
-                            onClick={handleSubmit}
-                        >
+                        <Button type="button" variant="orange" onClick={handleSubmit}>
                             Submit
                         </Button>
                     </div>

@@ -1,6 +1,5 @@
-import { cva } from 'class-variance-authority';
-
 import { cn } from '@/lib/utils';
+import { cva } from 'class-variance-authority';
 
 const badgeVariants = cva(
     'inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
@@ -12,6 +11,10 @@ const badgeVariants = cva(
                 destructive:
                     'border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80',
                 outline: 'text-foreground',
+                yellow: 'border-transparent bg-yellow-300 text-warning-foreground hover:bg-warning/80',
+                red: 'text-white bg-red-500',
+                green: 'text-white bg-green-500',
+                blue: 'text-white bg-blue-500',
             },
         },
         defaultVariants: {

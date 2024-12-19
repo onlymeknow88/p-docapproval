@@ -26,7 +26,7 @@ return new class extends Migration
             $table->longText('DayLimitP2Notif')->nullable();
             $table->longText('DayLimitP3Notif')->nullable();
             $table->string('CreatedBy',45);
-            $table->string('UpdatedBy',45);
+            $table->string('UpdatedBy',45)->nullable();
             $table->timestamps();
 
             $table->foreign('ba_app_id')->references('id')->on('ba_apps')->onDelete('cascade');

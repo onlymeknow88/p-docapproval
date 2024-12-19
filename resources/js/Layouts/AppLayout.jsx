@@ -25,6 +25,11 @@ export default function AppLayout({ title, children }) {
     // const auth = usePage().props.auth.user;
 
     const [authUser, setAuthUser] = useState([]);
+    const [authVendor, setAuthVendor] = useState([]);
+
+    const encodedType = sessionStorage.getItem('type');
+
+    const type = atob(encodedType);
 
     const getInitialName = (fullName) => {
         if (!fullName) return '';
@@ -38,12 +43,17 @@ export default function AppLayout({ title, children }) {
 
     const fetchUser = async () => {
         try {
-            const response = await axios.get('/api/user', {
+            const response = await axios.get('/api/user?type=' + type, {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                 },
             });
-            setAuthUser(response.data);
+
+            if (type === 'vendor') {
+                setAuthVendor(response.data);
+            } else {
+                setAuthUser(response.data);
+            }
         } catch (error) {
             console.error('Error fetching user:', error);
         }
@@ -66,6 +76,8 @@ export default function AppLayout({ title, children }) {
             console.log(response);
             if (response.status === 200) {
                 sessionStorage.removeItem('token');
+                sessionStorage.removeItem('type');
+                sessionStorage.removeItem('user');
                 window.location.href = route('login');
             }
         } catch (error) {
@@ -118,28 +130,33 @@ export default function AppLayout({ title, children }) {
                             </SheetContent>
                         </Sheet>
                         {/* dropdown */}
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" className="flex gap-x-2">
-                                    <span>Hi, {authUser.name}</span>
-
-                                    <Avatar>
-                                        <AvatarImage src={authUser.avatar} />
-                                        <AvatarFallback>{getInitialName(authUser.name)}</AvatarFallback>
-                                    </Avatar>
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-56" align="end" forceMount>
-                                <DropdownMenuLabel>Account</DropdownMenuLabel>
-                                <DropdownMenuItem>Profile</DropdownMenuItem>
-                                <DropdownMenuItem>Settings</DropdownMenuItem>
-                                <DropdownMenuItem asChild>
-                                    <Link onClick={logout} as="button" className="w-full">
-                                        Logout
-                                    </Link>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                        <div className="flex items-center gap-2">
+                            <span>Hi, {type === 'vendor' ? authVendor.VendorName : authUser.name}</span>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" className="flex rounded-full hover:bg-transparent">
+                                        <Avatar>
+                                            <AvatarImage src={authUser.avatar} />
+                                            <AvatarFallback>
+                                                {type === 'vendor'
+                                                    ? authVendor.Abbreviation
+                                                    : getInitialName(authUser.name)}
+                                            </AvatarFallback>
+                                        </Avatar>
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="w-56" align="end" forceMount>
+                                    <DropdownMenuLabel>Account</DropdownMenuLabel>
+                                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                                    <DropdownMenuItem>Settings</DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
+                                        <Link onClick={logout} as="button" className="w-full">
+                                            Logout
+                                        </Link>
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
                     </header>
                     <main className="w-full">
                         <div className="relative">

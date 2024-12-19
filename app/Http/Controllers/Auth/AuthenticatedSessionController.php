@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Role;
 use App\Models\User;
-use Inertia\Inertia;
 
+use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\Request;
 use App\Models\EInvoice\Vendor;
@@ -50,6 +51,16 @@ class AuthenticatedSessionController extends Controller
                 return response()->json(['error' => 'Invalid credentials'], 401);
             }
 
+            $isExist = Role::where('user', $vendor->UserName)->first();
+
+            if (!$isExist) {
+                Role::create([
+                    'name' => 'vendor',
+                    'user' => $vendor->UserName,
+                    'CreatedBy' => $vendor->VendorNo
+                ]);
+            }
+
             // Auth::guard('vendor')->login($vendor);
             auth('api_vendor')->login($vendor);
 
@@ -61,7 +72,8 @@ class AuthenticatedSessionController extends Controller
                 'access_token' => $token,
                 'token_type' => 'Bearer',
                 'expires_in' => Auth::factory()->getTTL() * 60,
-                'type' => 'vendor'
+                'type' => 'vendor',
+                'user' => $vendor->VendorNo
             ], 'Login success');
         } else {
 
@@ -74,6 +86,16 @@ class AuthenticatedSessionController extends Controller
 
             if ($user) {
 
+                $isExist = Role::where('user', $user->username)->first();
+
+                if (!$isExist) {
+                    Role::create([
+                        'name' => 'ami',
+                        'user' => $user->username,
+                        'CreatedBy' => $user->username
+                    ]);
+                }
+
                 auth('api')->login($user);
 
                 $token = JWTAuth::fromUser($user);
@@ -84,7 +106,8 @@ class AuthenticatedSessionController extends Controller
                     'access_token' => $token,
                     'token_type' => 'Bearer',
                     'expires_in' => Auth::factory()->getTTL(),
-                    'type' => 'user'
+                    'type' => 'ami',
+                    'user' => $user->username
                 ], 'Login success');
             }
         }
@@ -94,14 +117,17 @@ class AuthenticatedSessionController extends Controller
     }
 
 
-    public function me()
+    public function me(Request $request)
     {
-        if(auth('api')->check()) {
-        return response()->json(auth('api')->user());
-        } else {
-        return response()->json(auth('api_vendor')->user());
+        $type = $request->type;
+
+        if ($type === 'ami') {
+            return response()->json(auth('api')->user());
         }
 
+        if ($type === 'vendor') {
+            return response()->json(auth('api_vendor')->user());
+        }
     }
 
     public function logout(Request $request)

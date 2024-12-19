@@ -16,12 +16,12 @@ return new class extends Migration
             $table->unsignedBigInteger('project_id');
             $table->string('JobDescription',150);
             $table->string('Unit',20);
-            $table->bigInteger('UnitPriceRP');
-            $table->bigInteger('Target');
-            $table->bigInteger('Realisation')->nullable();
+            $table->decimal('UnitPriceRP',12,2);
+            $table->decimal('Target',10,2);
+            $table->decimal('Realisation',10,2)->nullable();
             $table->bigInteger('Invoice')->nullable();
             $table->string('CreatedBy',45);
-            $table->string('UpdatedBy',45);
+            $table->string('UpdatedBy',45)->nullable();
             $table->timestamps();
 
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');

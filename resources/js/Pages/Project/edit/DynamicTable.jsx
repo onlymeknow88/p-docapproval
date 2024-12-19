@@ -1,11 +1,10 @@
-import { Edit, Plus, Save, Trash2, X } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Edit, Plus, Save, Trash2, X } from 'lucide-react';
 
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/components/ui/input';
-import callAPI from '../../../config/callAPI'
-import { toast } from 'sonner';
 import { useState } from 'react';
+import callAPI from '../../../config/callAPI';
 
 const DynamicProjectTable = ({ setData, data, units, errors, refreshData }) => {
     const [columns] = useState(['#', 'Group', 'Project Desc', 'Target', 'Unit', 'Unit Price (Rp)', 'Actions']);
@@ -87,11 +86,11 @@ const DynamicProjectTable = ({ setData, data, units, errors, refreshData }) => {
 
     const deleteRow = async (rowId) => {
         const res = await deteleRowWorksheet(rowId);
-        console.log(res)
+        console.log(res);
         if (res.data.meta.code === 200) {
             setRows(rows.filter((row) => row.id !== rowId));
             // toast.success(res.data.meta.message);
-            
+
             // if(refreshData)
             // {
             //     refreshData()
@@ -199,7 +198,7 @@ const DynamicProjectTable = ({ setData, data, units, errors, refreshData }) => {
                                                 <Edit className="h-4 w-4" />
                                             </Button>
                                             <Button variant="outline" onClick={() => deleteRow(row.id)}>
-                                                <Trash2 className="h-4 w-4" /> 
+                                                <Trash2 className="h-4 w-4" />
                                             </Button>
                                         </div>
                                     </td>
